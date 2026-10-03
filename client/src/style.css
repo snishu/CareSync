@@ -1297,3 +1297,34 @@ body {
     padding-bottom: 0 !important;
   }
 }
+
+@media (max-width: 600px) {
+  .panel-foot {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+    padding: 8px 6px !important;
+    margin-top: 12px !important;
+    text-align: center !important;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-foot::before {
+    margin-bottom: 6px !important;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .panel-foot {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    padding: 10px 8px !important;
+    margin-top: 12px !important;
+    text-align: center !important;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-foot::before {
+    margin-bottom: 7px !important;
+  }
+}
