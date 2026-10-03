@@ -1270,3 +1270,30 @@ body{background:#070817;color:#f7f8ff}
     margin-top: 20px !important;
   }
 }
+
+/* Remove the unwanted gap below footer */
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #0b0b18 !important;
+}
+
+.panel-foot {
+  margin-bottom: 0 !important;
+}
+
+.auth-shell {
+  min-height: 100vh;
+}
+
+@media (max-width: 600px) {
+  .auth-shell {
+    min-height: 100dvh;
+    padding-bottom: 0 !important;
+  }
+
+  .auth-panel {
+    padding-bottom: 0 !important;
+  }
+}
