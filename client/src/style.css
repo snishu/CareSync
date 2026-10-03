@@ -1097,3 +1097,176 @@ body{background:#070817;color:#f7f8ff}
 .auth-card input[type="email"]::placeholder{
   padding-left:0 !important;
 }
+
+/* =========================================
+   CARESYNC — MOBILE LOGIN / CREATE ACCOUNT FIX
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .auth-shell {
+    min-height: 100svh;
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel {
+    padding: 12px 10px 16px !important;
+    min-height: 100svh;
+    align-content: start;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 16px 14px !important;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  /* Brand spacing */
+  .mobile-brand {
+    margin: 0 0 10px !important;
+  }
+
+  .mobile-brand .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  /* Login / Create Account heading */
+  .auth-head {
+    gap: 10px;
+  }
+
+  .mini-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  .auth-head h2 {
+    font-size: 20px !important;
+    line-height: 1.25;
+  }
+
+  .auth-head p {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  /* Reduce tab gaps */
+  .tabs {
+    margin: 14px 0 12px !important;
+    padding: 3px;
+  }
+
+  .tabs button {
+    padding: 9px 6px;
+    font-size: 11px;
+  }
+
+  /* Compact form fields */
+  form label {
+    margin: 8px 0 !important;
+    font-size: 10px;
+  }
+
+  .input-icon input,
+  .auth-card input,
+  .auth-card select {
+    min-height: 40px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 11px;
+  }
+
+  .input-icon input {
+    padding-left: 38px;
+  }
+
+  .primary {
+    padding: 11px 12px;
+    border-radius: 11px;
+  }
+
+  .secure {
+    margin-top: 9px !important;
+    font-size: 9px;
+  }
+
+  /* Footer — less gap, better visibility */
+  .panel-foot {
+    margin: 10px 0 0 !important;
+    padding: 8px 4px 0 !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0.15px !important;
+    overflow-wrap: anywhere;
+  }
+
+  .panel-foot::before {
+    width: 85% !important;
+    margin-bottom: 7px !important;
+  }
+
+  /* Keep long Create Account forms scrollable */
+  .auth-card form {
+    min-width: 0;
+  }
+
+  .captcha {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin: 9px 0;
+  }
+}
+
+/* Extra compact on shorter phone screens */
+@media (max-width: 600px) and (max-height: 700px) {
+  .auth-panel {
+    padding-top: 8px !important;
+  }
+
+  .auth-card {
+    padding: 13px 12px !important;
+  }
+
+  .tabs {
+    margin: 10px 0 !important;
+  }
+
+  .panel-foot {
+    margin-top: 7px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .auth-shell {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
+  .auth-panel {
+    padding-bottom: 0 !important;
+  }
+
+  .panel-foot {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .panel-foot::before {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+@media (max-width: 600px) {
+  .panel-foot {
+    margin-top: 20px !important;
+  }
+}
