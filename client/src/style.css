@@ -1090,3 +1090,10 @@ body{background:#070817;color:#f7f8ff}
     height:15px !important;
   }
 }
+.auth-card input[type="email"]{
+  padding-left:42px !important;
+}
+
+.auth-card input[type="email"]::placeholder{
+  padding-left:0 !important;
+}
