@@ -964,3 +964,129 @@ body{background:#070817;color:#f7f8ff}
     margin-bottom:6px !important;
   }
 }
+
+/* =========================
+   MOBILE UI FIX
+========================= */
+
+@media (max-width: 600px){
+
+  /* ---------- LOGIN / SIGNUP ---------- */
+
+  .auth-card{
+    padding:18px 16px !important;
+  }
+
+  .auth-card form{
+    gap:9px !important;
+  }
+
+  .auth-card form > label{
+    gap:4px !important;
+    margin:0 !important;
+  }
+
+  .auth-card form input,
+  .auth-card form select,
+  .auth-card form textarea{
+    min-height:40px !important;
+    padding:8px 11px !important;
+  }
+
+  .auth-card form label{
+    font-size:11px !important;
+  }
+
+  .auth-card .primary{
+    margin-top:3px !important;
+  }
+
+
+  /* ---------- DASHBOARD HEADER ---------- */
+
+  .topbar{
+    display:flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    padding:9px 8px !important;
+    overflow:visible !important;
+  }
+
+  .topbar nav{
+    display:none !important;
+  }
+
+  .top-actions{
+    display:flex !important;
+    align-items:center !important;
+    gap:5px !important;
+    margin-left:auto !important;
+    flex-shrink:0 !important;
+    overflow:visible !important;
+  }
+
+  .alert-switch{
+    width:34px !important;
+    min-width:34px !important;
+    height:34px !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  .alert-switch span{
+    display:none !important;
+  }
+
+  /* USER + LOGOUT */
+
+  .user-chip{
+    display:flex !important;
+    align-items:center !important;
+    gap:5px !important;
+    height:34px !important;
+    max-width:135px !important;
+    padding:3px 4px 3px 6px !important;
+    flex-shrink:0 !important;
+    overflow:visible !important;
+  }
+
+  .user-chip .avatar{
+    display:flex !important;
+    width:26px !important;
+    height:26px !important;
+    min-width:26px !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  .user-chip > span{
+    display:block !important;
+    max-width:50px !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    white-space:nowrap !important;
+    font-size:10px !important;
+  }
+
+  .user-chip > button{
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    width:28px !important;
+    min-width:28px !important;
+    height:28px !important;
+    padding:0 !important;
+    margin:0 !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex-shrink:0 !important;
+  }
+
+  .user-chip > button svg{
+    display:block !important;
+    width:15px !important;
+    height:15px !important;
+  }
+}
