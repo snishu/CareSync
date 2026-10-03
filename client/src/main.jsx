@@ -41,8 +41,31 @@ function ensureAudio(){
 }
 function startAlarmLoop(){const ctx=ensureAudio();if(!ctx)return;if(alarmTimer)clearInterval(alarmTimer);const beep=()=>{try{const now=ctx.currentTime;[560,660,560,740].forEach((freq,i)=>{const start=now+i*.18;const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,start);g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(.20,start+.018);g.gain.exponentialRampToValueAtTime(.0001,start+.12);o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+.14)})}catch{}};beep();alarmTimer=setInterval(beep,850)}function stopAlarmLoop(){if(alarmTimer){clearInterval(alarmTimer);alarmTimer=null}try{if(alarmAudioCtx?.state==='running')alarmAudioCtx.suspend()}catch{}}
 function playAlarm(){startAlarmLoop()}
-async function requestAlerts(){ensureAudio();if('Notification'in window){const permission=Notification.permission==='default'?await Notification.requestPermission():Notification.permission;return permission==='granted'}return true}
-function notify(title,body){if('Notification'in window&&Notification.permission==='granted')new Notification(title,{body});startAlarmLoop()}
+async function requestAlerts(){
+  try{
+    ensureAudio();
+    if('Notification' in window){
+      const permission=Notification.permission==='default'
+        ?await Notification.requestPermission()
+        :Notification.permission;
+      return permission==='granted';
+    }
+  }catch(e){
+    console.log('Notification not available:',e);
+  }
+  return false;
+}
+function notify(title,body){
+  try{
+    if('Notification' in window && Notification.permission==='granted'){
+      new Notification(title,{body});
+    }
+  }catch(e){
+    console.log('Notification failed:',e);
+  }
+
+  startAlarmLoop();
+}
 function reminderKey(kind,id,suffix){return `cs_rem_${kind}_${id}_${suffix}`}
 function dueTask(t,now){if(!t.reminderEnabled||!t.reminderAt||t.completed)return false;const base=new Date(t.reminderAt);if(Number.isNaN(base.getTime()))return false;const sameMinute=now.getHours()===base.getHours()&&now.getMinutes()===base.getMinutes();if(!sameMinute)return false;if(t.repeat==='Daily')return true;if(t.repeat==='Weekly')return now.getDay()===base.getDay();return now.toDateString()===base.toDateString()}
 function dueMedicine(m,now){if(!m.active||!m.alarmEnabled||!m.time)return false;const [h,min]=m.time.split(':').map(Number);return now.getHours()===h&&now.getMinutes()===min}
@@ -70,7 +93,23 @@ function Dashboard({user,onLogout}){
  {tab!=='medicines'&&<div className="list">{data.tasks?.length?data.tasks.map(t=><div className={`list-item ${t.completed?'done':''} ${t.reminderEnabled?'reminded':''}`} key={t._id}><button className="check" onClick={()=>toggle(t)}>{t.completed&&<Check size={15}/>}</button><div className="li-main"><div className="task-title-row"><b>{t.title}</b>{t.reminderEnabled&&<span className="alarm-tag"><AlarmClock size={12}/>{t.repeat==='Once'?'Alarm':t.repeat}</span>}{t.parentAlert&&<span className="family-tag"><Users size={12}/>Parent alert</span>}</div><span>{t.description||'No description'} {t.dueDate&&`· Due ${t.dueDate}`}</span></div><span className={`priority ${t.priority.toLowerCase()}`}>{t.priority}</span><button className="icon-btn" onClick={()=>{setDeleteTask(t);setDeletePassword('')}}><Trash2 size={16}/></button></div>):<Empty title="No tasks yet" text="Create a task and add a time-based alarm."/>}</div>}
  {tab==='medicines'&&<div className="list">{data.medicines?.length?data.medicines.map(m=><div className="list-item reminded" key={m._id}><div className="med-icon"><Pill size={18}/></div><div className="li-main"><div className="task-title-row"><b>{m.name}</b>{m.alarmEnabled&&<span className="alarm-tag"><AlarmClock size={12}/>Alarm</span>}</div><span>{m.dosage||'Dosage not specified'} · {m.frequency}</span></div><span className="time-pill"><Clock3 size={14}/>{m.time}</span><button className="icon-btn" onClick={()=>delMed(m._id)}><Trash2 size={16}/></button></div>):<Empty title="No medicine reminders" text="Add a medicine and choose the exact alarm time."/>}</div>}
  {tab==='overview'&&<div className="overview-grid"><div className="mini-panel"><div className="mini-panel-head"><span>UP NEXT</span><CalendarClock size={17}/></div>{upcoming.length?upcoming.map((x,i)=><div className="upcoming" key={i}><div className="up-icon">{x.kind==='Medicine'?<Pill size={15}/>:<AlarmClock size={15}/>}</div><div><b>{x.title}</b><small>{x.repeat}</small></div><strong>{String(x.time).includes('T')?new Date(x.time).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):x.time}</strong></div>):<div className="soft-empty">No active alarms. Your day is quiet.</div>}</div><div className="mini-panel premium-panel"><div className="spark">✦</div><span>CARE SYNC TIP</span><h3>Turn routine into momentum.</h3><p>Set a reminder for anything that needs attention — not just medicine. Calls, assignments, workouts, bills, errands and family check-ins all belong here.</p><button onClick={()=>setShowTask(true)}>Schedule a task <ArrowRight size={16}/></button></div></div>}</section>
- <aside className="side-panel"><div className="side-card accent"><div className="round"><BellRing/></div><div><span>ALERT CENTER</span><h3>Right task.<br/>Right time.</h3></div><p>CareSync can show a browser alert and play a sound when an active reminder reaches its time.</p><button className="light-btn" onClick={async()=>setAlerts(await requestAlerts())}><Volume2 size={16}/> Test alarm now</button></div><div className="side-card"><div className="side-head"><b>Quick actions</b><ChevronRight size={17}/></div><button onClick={()=>setShowTask(true)}><Plus/> Add a task <ChevronRight/></button><button onClick={()=>setShowMed(true)}><Pill/> Add medicine <ChevronRight/></button><button onClick={()=>setShowFamily(true)}><Users/> Family alerts <ChevronRight/></button><button onClick={async()=>setAlerts(await requestAlerts())}><Bell/> Enable notifications <ChevronRight/></button></div></aside></div></main>
+ <aside className="side-panel"><div className="side-card accent"><div className="round"><BellRing/></div><div><span>ALERT CENTER</span><h3>Right task.<br/>Right time.</h3></div><p>CareSync can show a browser alert and play a sound when an active reminder reaches its time.</p>
+<button
+  className="light-btn"
+  onClick={async () => {
+    ensureAudio();
+    playAlarm();
+
+    setTimeout(() => {
+      stopAlarmLoop();
+    }, 2000);
+
+    const granted = await requestAlerts();
+    setAlerts(granted);
+  }}
+>
+  <Volume2 size={16} /> Test alarm now
+</button></div><div className="side-card"><div className="side-head"><b>Quick actions</b><ChevronRight size={17}/></div><button onClick={()=>setShowTask(true)}><Plus/> Add a task <ChevronRight/></button><button onClick={()=>setShowMed(true)}><Pill/> Add medicine <ChevronRight/></button><button onClick={()=>setShowFamily(true)}><Users/> Family alerts <ChevronRight/></button><button onClick={async()=>setAlerts(await requestAlerts())}><Bell/> Enable notifications <ChevronRight/></button></div></aside></div></main>
  <footer className="dashboard-footer">
   <div className="footer-brand">
     <span className="footer-dot"></span>
